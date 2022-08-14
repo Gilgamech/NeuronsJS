@@ -3,6 +3,8 @@
 //Updated: 8/14/2022
 //Notes: Inspired by this neural network in a spreadsheet: https://medium.com/@MoralRobots/neurons-in-spreadsheets-e917c5c77a22
 
+//Training is iterating rates based on desired inputs. Operation is iterating inputs.
+
 var Threshold = 0
 var Goal = 1
 var neuronNumber = 0;
@@ -12,11 +14,13 @@ var Output = 0
 var iterations = 0;
 
 
-function runNeurons() {
+function runNeurons(sensitivity=0.01) {
 	createNeuron(3)
-	
-	Output = neuron(2,neuron(0,1,1),neuron(1,1,1))
-	console.log("Output: "+Output+" iterations: "+iterations)
+	var diff = Output - Goal;
+	while (diff < sensitivity) {		
+		Output = neuron(2,neuron(0,1,1),neuron(1,1,1))
+		console.log("Output: "+Output+" iterations: "+iterations)
+	}
 }
 
 function createNeuron(num) {
@@ -53,7 +57,6 @@ function neuron(neuronId,input1,input2) {
 }
 
 function Rate(Goal,Output,Weight) {
-	//If too close to the sensitivity, return 0, else return a weighted rate.
 	return getRoundedNumber(Math.abs(Goal - Output)*Weight,3)
 };//end function
 
